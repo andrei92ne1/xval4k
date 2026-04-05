@@ -1,0 +1,377 @@
+<!DOCTOR html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Roblox Hub - Free Service</title>
+
+    <link rel="icon" type="image/jpg" href="images/images.jpg">
+    <link rel="apple-touch-icon" href="images/images.jpg">
+
+    <meta property="og:title" content="Roblox Hub - Free Service">
+    <meta property="og:description" content="Access the best Roblox tools and games.">
+    <meta property="og:image" content="images/images.jpg">
+    <meta property="og:type" content="website">
+
+    <style>
+        :root {
+            --primary-orange: #ff9900;
+            --bg-black: #0a0a0a;
+            --nav-bg: #121212;
+            --verified-blue: #3897f0;
+            --card-bg: #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* --- SNOW LAYER --- */
+        #snowCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--nav-bg);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #1f1f1f;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 600;
+            text-transform: lowercase;
+        }
+
+        .logo span {
+            background: var(--primary-orange);
+            color: black;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-left: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-trigger {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            filter: invert(1);
+        }
+
+        /* --- USER ICON --- */
+        .user-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .u-head { width: 10px; height: 10px; background: #0056b3; border-radius: 50%; }
+        .u-body { width: 20px; height: 10px; background: #0056b3; border-radius: 8px 8px 2px 2px; margin-top: 1px; }
+
+        /* --- SEARCH BAR --- */
+        #searchContainer {
+            display: none;
+            padding: 10px 16px;
+            background: #1a1a1a;
+            border-bottom: 1px solid #333;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        #searchInput:focus { border-color: var(--primary-orange); }
+
+        /* --- FEED --- */
+        .feed { max-width: 500px; margin: 0 auto; padding: 10px 0 50px 0; }
+        
+        .card { 
+            background: var(--card-bg); 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .thumb-box { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; }
+        .thumb-box img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .rank { 
+            position: absolute; 
+            top: 0; left: 0; 
+            background: rgba(0,0,0,0.8); 
+            color: var(--primary-orange); 
+            padding: 5px 15px; 
+            font-weight: 900; 
+            font-style: italic; 
+            font-size: 22px; 
+        }
+
+        .card-footer { padding: 15px; }
+
+        .profile-row { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .pfp { width: 45px; height: 45px; border-radius: 50%; border: 1px solid #333; }
+        
+        .info b { display: block; font-size: 16px; }
+        .verified { 
+            display: flex; 
+            align-items: center; 
+            gap: 4px; 
+            font-size: 11px; 
+            color: #aaa; 
+            font-weight: bold; 
+            margin-top: 2px;
+        }
+        
+        .check { 
+            width: 14px; height: 14px; 
+            background: var(--verified-blue); 
+            color: white; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 8px; 
+        }
+
+        .btn { 
+            width: 100%; 
+            background: var(--primary-orange); 
+            color: black; 
+            border: none; 
+            padding: 14px; 
+            border-radius: 4px; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            font-size: 15px; 
+            cursor: pointer; 
+            transition: 0.2s;
+        }
+
+        .btn:active { transform: scale(0.98); opacity: 0.9; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .card { animation: fadeIn 0.4s ease-in; }
+    </style>
+</head>
+<body>
+
+    <canvas id="snowCanvas" width="1125" height="850"></canvas>
+
+    <nav class="navbar">
+        <div class="menu-icon">☰</div>
+        <div class="logo">roblox <span>hub</span></div>
+        <div class="nav-right">
+            <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" class="search-trigger" onclick="toggleSearch()" alt="Search">
+            <div class="user-icon">
+                <div class="u-head"></div>
+                <div class="u-body"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="searchContainer">
+        <input type="text" id="searchInput" placeholder="Search games..." onkeyup="filterGames()">
+    </div>
+
+    <div class="feed" id="mainFeed">
+                <div class="card">
+                    <div class="thumb-box">
+                        <div class="rank">1</div>
+                        <img src="images/images-1.jpg" onerror="this.src='https://via.placeholder.com/400x225?text=Image+Not+Found'">
+                    </div>
+                    <div class="card-footer">
+                        <div class="profile-row">
+                            <img src="images/profile.jpg" class="pfp" onerror="this.src='https://via.placeholder.com/50x50'">
+                            <div class="info">
+                                <b>Bloxfruit 🤖</b>
+                                <div class="verified">xval4k<div class="check">✓</div></div>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="window.location.href='login'">Play Now &amp; Join</button>
+                    </div>
+                </div>
+            
+                <div class="card">
+                    <div class="thumb-box">
+                        <div class="rank">2</div>
+                        <img src="images/images-2.jpg" onerror="this.src='https://via.placeholder.com/400x225?text=Image+Not+Found'">
+                    </div>
+                    <div class="card-footer">
+                        <div class="profile-row">
+                            <img src="images/profile.jpg" class="pfp" onerror="this.src='https://via.placeholder.com/50x50'">
+                            <div class="info">
+                                <b>Adopt Me! 🐩</b>
+                                <div class="verified">xval4k<div class="check">✓</div></div>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="window.location.href='login.html'">Play Now &amp; Join</button>
+                    </div>
+                </div>
+            
+                <div class="card">
+                    <div class="thumb-box">
+                        <div class="rank">3</div>
+                        <img src="images/images-3.jpg" onerror="this.src='https://via.placeholder.com/400x225?text=Image+Not+Found'">
+                    </div>
+                    <div class="card-footer">
+                        <div class="profile-row">
+                            <img src="images/profile.jpg" class="pfp" onerror="this.src='https://via.placeholder.com/50x50'">
+                            <div class="info">
+                                <b>[VC] CozyPlaza 🌸</b>
+                                <div class="verified">xval4k<div class="check">✓</div></div>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="window.location.href='verify.html'">Play Now &amp; Join</button>
+                    </div>
+                </div>
+            
+                <div class="card">
+                    <div class="thumb-box">
+                        <div class="rank">4</div>
+                        <img src="images/images-4.jpg" onerror="this.src='https://via.placeholder.com/400x225?text=Image+Not+Found'">
+                    </div>
+                    <div class="card-footer">
+                        <div class="profile-row">
+                            <img src="images/profile.jpg" class="pfp" onerror="this.src='https://via.placeholder.com/50x50'">
+                            <div class="info">
+                                <b>Lavender Bay 🌌</b>
+                                <div class="verified">xval4k<div class="check">✓</div></div>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="window.location.href='login'">Play Now &amp; Join</button>
+                    </div>
+                </div>
+            </div>
+
+    <script>
+        const REDIRECT_URL = "verify.html"; // Where the "Play" button goes
+        
+        const data = [
+            { id: 1, name: "Bloxfruit 🤖", img: "images/images-1.jpg" },
+            { id: 2, name: "Adopt Me! 🐩", img: "images/images-2.jpg" },
+            { id: 3, name: "[VC] CozyPlaza 🌸", img: "images/images-3.jpg" },
+            { id: 4, name: "Lavender Bay 🌌", img: "images/images-4.jpg" }
+        ];
+
+        function renderGames(items) {
+            const feed = document.getElementById('mainFeed');
+            if (items.length === 0) {
+                feed.innerHTML = `<div style="text-align:center; padding:100px 20px; color:#555;">No games match your search.</div>`;
+                return;
+            }
+            feed.innerHTML = items.map(item => `
+                <div class="card">
+                    <div class="thumb-box">
+                        <div class="rank">${item.id}</div>
+                        <img src="${item.img}" onerror="this.src='https://via.placeholder.com/400x225?text=Image+Not+Found'">
+                    </div>
+                    <div class="card-footer">
+                        <div class="profile-row">
+                            <img src="images/profile.jpg" class="pfp" onerror="this.src='https://via.placeholder.com/50x50'">
+                            <div class="info">
+                                <b>${item.name}</b>
+                                <div class="verified">xval4k<div class="check">✓</div></div>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="window.location.href='${REDIRECT_URL}'">Play Now & Join</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleSearch() {
+            const container = document.getElementById('searchContainer');
+            const isVisible = container.style.display === "block";
+            container.style.display = isVisible ? "none" : "block";
+            if (!isVisible) document.getElementById('searchInput').focus();
+        }
+
+        function filterGames() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = data.filter(game => game.name.toLowerCase().includes(query));
+            renderGames(filtered);
+        }
+
+        /* --- SNOW ANIMATION --- */
+        const canvas = document.getElementById('snowCanvas');
+        const ctx = canvas.getContext('2d');
+        let flakes = [];
+
+        function initSnow() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            flakes = [];
+            for (let i = 0; i < 50; i++) {
+                flakes.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    s: Math.random() * 2 + 1,
+                    d: Math.random() * 1 + 0.5
+                });
+            }
+        }
+
+        function drawSnow() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+            ctx.beginPath();
+            flakes.forEach(f => {
+                ctx.moveTo(f.x, f.y);
+                ctx.arc(f.x, f.y, f.s, 0, Math.PI * 2);
+                f.y += f.d;
+                if (f.y > canvas.height) f.y = -5;
+            });
+            ctx.fill();
+            requestAnimationFrame(drawSnow);
+        }
+
+        window.addEventListener('resize', initSnow);
+        initSnow();
+        drawSnow();
+
+        // Initial Load
+        renderGames(data);
+  </script>
